@@ -1,0 +1,55 @@
+﻿<Window x:Class="SimpleSocketClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleSocketClient"
+        mc:Ignorable="d"
+        Title="Simple Socket Client" Height="600" Width="700" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen" Closed="HandleWindowClosed">
+  <Grid>
+    <Label Content="Hostname/URL:" HorizontalAlignment="Left" Margin="177,10,0,0" VerticalAlignment="Top"/>
+    <Label Content="Protocol:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+    <ComboBox x:Name="cbxProtocol" HorizontalAlignment="Left" Margin="72,12,0,0" VerticalAlignment="Top" Width="100" SelectionChanged="HandleCbxProtocolSelectionChanged">
+      <ComboBoxItem Content="TCP (Raw)" Tag="tcp"/>
+      <ComboBoxItem Content="WebSocket" Tag="websocket"/>
+    </ComboBox>
+    <TextBox x:Name="txtHostnameUrl" Margin="275,14,204,0" Text="whois.ripe.net" TextWrapping="NoWrap" VerticalAlignment="Top"/>
+    <Label Content="Port:" Margin="0,10,165,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="34"/>
+    <TextBox x:Name="txtPort" HorizontalAlignment="Right" Margin="0,14,121,0" Text="43" TextWrapping="NoWrap" VerticalAlignment="Top" Width="39" />
+    <ComboBox x:Name="cbxSocketMode" Margin="0,12,8,0" VerticalAlignment="Top" SelectedIndex="0" HorizontalAlignment="Right" Width="99">
+      <ComboBoxItem Tag="dual" Content="Dual Mode"/>
+      <ComboBoxItem Tag="ipv4" Content="IPv4"/>
+      <ComboBoxItem Tag="ipv6" Content="IPv6"/>
+    </ComboBox>
+    <CheckBox x:Name="chkUseSsl" Content="Use TLS" Margin="10,43,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Checked="HandleChkUseSslCheckedUnchecked" Unchecked="HandleChkUseSslCheckedUnchecked" />
+    <CheckBox x:Name="chkIgnoreCertErrors" Content="Ignore Cert Errors (Insecure!)" Margin="78,43,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+    <CheckBox x:Name="chkTls10" Content="TLS 1.0" Margin="336,43,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+    <CheckBox x:Name="chkTls11" Content="TLS 1.1" Margin="397,43,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+    <CheckBox x:Name="chkTls12" Content="TLS 1.2" Margin="458,43,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" IsChecked="True" />
+    <CheckBox x:Name="chkTls13" Content="TLS 1.3" Margin="519,43,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" IsChecked="True" />
+    <Button x:Name="btnConnect" Content="Connect" HorizontalAlignment="Right" Margin="0,66,10,0" VerticalAlignment="Top" Width="112" Height="23" Click="HandleBtnConnectClick" />
+    <Rectangle Height="1" Margin="10,100,10,0" Stroke="Black" VerticalAlignment="Top"/>
+    <RichTextBox x:Name="rtfReceive" Margin="10,113,10,149" IsReadOnly="True" IsReadOnlyCaretVisible="True" VerticalScrollBarVisibility="Visible"  FontFamily="Consolas">
+      <FlowDocument x:Name="rtfReceiveDocument">
+      </FlowDocument>
+    </RichTextBox>
+    <TextBox x:Name="txtSendText" Margin="10,0,10,43" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" FontFamily="Consolas" KeyDown="HandleTxtSendTextKeyDown" Height="76" VerticalAlignment="Bottom"/>
+    <Button x:Name="btnSend" Content="Send" HorizontalAlignment="Right" Margin="0,0,173,15" VerticalAlignment="Bottom" Width="90" Height="23" IsEnabled="False" Click="HandleBtnSendClick"/>
+    <Button x:Name="btnCloseSendChannel" Content="Close Send Channel" HorizontalAlignment="Right" Margin="0,0,10,15" Width="150" IsEnabled="False" Height="23" VerticalAlignment="Bottom" Click="HandleBtnCloseSendChannelClick"/>
+    <ComboBox x:Name="cbxLineEnding" HorizontalAlignment="Right" Margin="0,0,268,16" VerticalAlignment="Bottom" Width="140" SelectedIndex="0">
+      <ComboBoxItem Tag="&#xd;&#xa;">CR+LF (0x0D, 0x0A)</ComboBoxItem>
+      <ComboBoxItem Tag="&#xa;">LF (0x0A)</ComboBoxItem>
+      <ComboBoxItem Tag="">None</ComboBoxItem>
+    </ComboBox>
+    <Label Content="Line Ending:" HorizontalAlignment="Right" Margin="0,0,413,14" VerticalAlignment="Bottom"/>
+    <CheckBox x:Name="chkSingleLine" Content="Single Line Text Box" HorizontalAlignment="Right" Margin="0,0,493,18" VerticalAlignment="Bottom" Checked="HandleChkSingleLineCheckedChanged" Unchecked="HandleChkSingleLineCheckedChanged" />
+    <ComboBox x:Name="cbxBinaryEncoding" HorizontalAlignment="Left" Margin="163,66,0,0" VerticalAlignment="Top" Width="185" SelectedIndex="0">
+      <ComboBoxItem Tag="windows-1252">Windows-1252 (Single Byte)</ComboBoxItem>
+      <ComboBoxItem Tag="utf-8">UTF-8 (Multi Byte)</ComboBoxItem>
+    </ComboBox>
+    <Label Content="Binary Message Encoding:" HorizontalAlignment="Left" Margin="10,63,0,0" VerticalAlignment="Top"/>
+    <Label Content="Protocols:" HorizontalAlignment="Left" Margin="268,37,0,0" VerticalAlignment="Top"/>
+    <Label Content="Text to send:" HorizontalAlignment="Left" Margin="10,0,0,119" Height="25" VerticalAlignment="Bottom"/>
+
+  </Grid>
+</Window>
