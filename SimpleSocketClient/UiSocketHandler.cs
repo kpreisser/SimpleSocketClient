@@ -99,14 +99,17 @@ namespace SimpleSocketClient
         {
             if (this.isWebsocket)
             {
+                // Use Uri.AbsoluteUri instead of Uri.ToString() as the latter unescapes
+                // characters and thus could return a string e.g. with spaces and non-ASCII
+                // characters.
                 this.OnSocketMessage(new SocketMessageEventArgs(
-                    $"Connecting to WebSocket URL '{this.webSocketUrl}'…",
+                    $"Connecting to WebSocket URL '{this.webSocketUrl!.AbsoluteUri}'…",
                     isMetaText: true));
             }
             else
             {
                 this.OnSocketMessage(new SocketMessageEventArgs(
-                    $"Connecting to '{host}:{port}'…",
+                    $"Connecting to '{this.host}:{this.port}'…",
                     isMetaText: true));
             }
 
