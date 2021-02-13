@@ -163,10 +163,10 @@ namespace SimpleSocketClient
         {
             try
             {
-                using var client = new TcpClient(this.addressFamily)
-                {
-                    NoDelay = true
-                };
+                using var client = new TcpClient(this.addressFamily);
+
+                // Disable the Nagle algorithm and delayed ACKs.
+                SocketConfigurator.ConfigureSocket(client.Client);
 
                 await client.ConnectAsync(host!, port, this.ctSource.Token);                
                 Stream clientStream = client.GetStream();
