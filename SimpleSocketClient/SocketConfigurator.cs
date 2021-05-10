@@ -11,6 +11,12 @@ namespace SimpleSocketClient
         /// Disables the Nagle algorithm and delayed ACKs for TCP sockets
         /// in order to improve response time.
         /// </summary>
+        /// <remarks>
+        /// You should call this method after the socket is connected, not before. Otherwise,
+        /// methods such as <see cref="TcpClient.ConnectAsync(string, int)"/> may throw a
+        /// <see cref="PlatformNotSupportedException"/> on non-Windows OSes. See:
+        /// https://github.com/dotnet/runtime/issues/24917
+        /// </remarks>
         /// <param name="socket"></param>
         public static void ConfigureSocket(Socket socket)
         {
