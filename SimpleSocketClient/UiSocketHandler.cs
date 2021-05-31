@@ -198,6 +198,12 @@ namespace SimpleSocketClient
                             },
                             this.ctSource.Token);
 
+                        // According to the docs we need to check IsSigned and IsEncrypted after
+                        // authentication succeeds, although such weak ciphers should never be
+                        // negotiated on a current system.
+                        if (!sslStream.IsSigned || !sslStream.IsEncrypted)
+                            throw new InvalidOperationException("SSL Stream is not signed or encrypted.");
+
                         var sslProtocol = sslStream.SslProtocol;
                         var cipherSuite = sslStream.NegotiatedCipherSuite;
                         var remoteCertificate = sslStream.RemoteCertificate!;
