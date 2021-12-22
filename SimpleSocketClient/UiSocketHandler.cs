@@ -219,6 +219,10 @@ namespace SimpleSocketClient
                     catch
                     {
                         await sslStream.DisposeAsync();
+
+                        // Reset the connection.
+                        client.Client.Close(0);
+
                         throw;
                     }
 
