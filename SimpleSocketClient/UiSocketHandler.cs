@@ -174,7 +174,7 @@ namespace SimpleSocketClient
 
                 // For better performance, we don't wait for the initial invokes to complete
                 // before continuing.
-                _ = this.Invoke(() => this.OnSocketMessage(new SocketMessageEventArgs(
+                _ = this.InvokeAsync(() => this.OnSocketMessage(new SocketMessageEventArgs(
                     $"TCP connection established to '{client.Client.RemoteEndPoint}'." + (this.useSsl ? " Negotiating TLS…" : ""),
                     isMetaText: true)));
 
@@ -208,7 +208,7 @@ namespace SimpleSocketClient
                         var cipherSuite = sslStream.NegotiatedCipherSuite;
                         var remoteCertificate = sslStream.RemoteCertificate!;
 
-                        _ = this.Invoke(() => this.OnSocketMessage(new SocketMessageEventArgs(
+                        _ = this.InvokeAsync(() => this.OnSocketMessage(new SocketMessageEventArgs(
                             $"TLS negotiated. Protocol: {FormatSslProtocol(sslProtocol)}, CipherSuite: {cipherSuite}, Certificate SHA-1 Hash: {remoteCertificate.GetCertHashString()} (issued by: {remoteCertificate.Issuer}; not after: {remoteCertificate.GetExpirationDateString()})",
                             isMetaText: true)));
                     }
@@ -245,7 +245,7 @@ namespace SimpleSocketClient
                                     // otherwise it could happen that the receive worker
                                     // task logs a message that is a result of our operation
                                     // before we actually logged it.
-                                    _ = this.Invoke(() => this.OnSocketMessage(new SocketMessageEventArgs(
+                                    _ = this.InvokeAsync(() => this.OnSocketMessage(new SocketMessageEventArgs(
                                         $"Send Channel closing.",
                                         isMetaText: true)));
 
@@ -274,7 +274,7 @@ namespace SimpleSocketClient
                                     // not in the action invoked in the UI thread.
                                     string text = this.binaryMessageEncoding.GetString(memory.Span);
 
-                                    _ = this.Invoke(() =>
+                                    _ = this.InvokeAsync(() =>
                                     {
                                         // Decode the bytes back to a string (instead of simply
                                         // using the original string), to ensure we display the
@@ -297,7 +297,7 @@ namespace SimpleSocketClient
                         }
                         catch (Exception ex)
                         {
-                            _ = this.Invoke(() => this.OnSocketMessage(new SocketMessageEventArgs(
+                            _ = this.InvokeAsync(() => this.OnSocketMessage(new SocketMessageEventArgs(
                                 $"Error when sending data: " + ex.Message,
                                 isMetaText: true)));
                         }
@@ -328,14 +328,14 @@ namespace SimpleSocketClient
                                 // We should wait here until the UI thread completed the invoked
                                 // action, to ensure we don't receive faster than the UI thread can
                                 // process the received data.
-                                await this.Invoke(() =>
+                                await this.InvokeAsync(() =>
                                 {
                                     this.OnSocketMessage(new SocketMessageEventArgs(text));
                                 });
                             }
                         }
 
-                        _ = this.Invoke(() => this.OnSocketMessage(new SocketMessageEventArgs(
+                        _ = this.InvokeAsync(() => this.OnSocketMessage(new SocketMessageEventArgs(
                             $"Receive Channel closed.",
                             isMetaText: true)));
 
@@ -344,7 +344,7 @@ namespace SimpleSocketClient
                     {
                         try
                         {
-                            _ = this.Invoke(() => this.OnSocketMessage(new SocketMessageEventArgs(
+                            _ = this.InvokeAsync(() => this.OnSocketMessage(new SocketMessageEventArgs(
                                 $"Error when receiving data: " + ex.Message,
                                 isMetaText: true)));
                         }
@@ -366,7 +366,7 @@ namespace SimpleSocketClient
             {
                 try
                 {
-                    _ = this.Invoke(() => this.OnSocketMessage(new SocketMessageEventArgs(
+                    _ = this.InvokeAsync(() => this.OnSocketMessage(new SocketMessageEventArgs(
                         $"Error when establishing connection: " + ex.Message,
                         isMetaText: true)));
                 }
@@ -383,7 +383,7 @@ namespace SimpleSocketClient
                 // because even though Stop() cancels the CancellationToken that we pass
                 // to Dispatcher.InvokeAsync(), the action is already being run and so the
                 // operation can no longer be canceled.
-                _ = this.Invoke(() => this.OnConnectionFinished(EventArgs.Empty));
+                _ = this.InvokeAsync(() => this.OnConnectionFinished(EventArgs.Empty));
             }
         }
 
@@ -399,7 +399,7 @@ namespace SimpleSocketClient
 
                 // For better performance, we don't wait for the initial invokes to complete
                 // before continuing.
-                _ = this.Invoke(() => this.OnSocketMessage(new SocketMessageEventArgs(
+                _ = this.InvokeAsync(() => this.OnSocketMessage(new SocketMessageEventArgs(
                     $"WebSocket connection established.",
                     isMetaText: true)));
                     
@@ -425,7 +425,7 @@ namespace SimpleSocketClient
                                 // otherwise it could happen that the receive worker
                                 // task logs a message that is a result of our operation
                                 // before we actually logged it.
-                                _ = this.Invoke(() => this.OnSocketMessage(new SocketMessageEventArgs(
+                                _ = this.InvokeAsync(() => this.OnSocketMessage(new SocketMessageEventArgs(
                                     $"Send Channel closing.",
                                     isMetaText: true)));
 
@@ -439,7 +439,7 @@ namespace SimpleSocketClient
                             else
                             {
                                 // Send the text.
-                                _ = this.Invoke(() =>
+                                _ = this.InvokeAsync(() =>
                                 {
                                     this.OnSocketMessage(new SocketMessageEventArgs(
                                         $"Sending WebSocket message (type: Text):",
@@ -467,7 +467,7 @@ namespace SimpleSocketClient
                     }
                     catch (Exception ex)
                     {
-                        _ = this.Invoke(() => this.OnSocketMessage(new SocketMessageEventArgs(
+                        _ = this.InvokeAsync(() => this.OnSocketMessage(new SocketMessageEventArgs(
                             $"Error when sending data: " + ex.Message,
                             isMetaText: true)));
                     }
@@ -517,7 +517,7 @@ namespace SimpleSocketClient
                             // We should wait here until the UI thread completed the invoked
                             // action, to ensure we don't receive faster than the UI thread can
                             // process the received data.
-                            await this.Invoke(() =>
+                            await this.InvokeAsync(() =>
                             {
                                 this.OnSocketMessage(new SocketMessageEventArgs(
                                     $"Received WebSocket message (type: {readResult.MessageType}):",
@@ -527,7 +527,7 @@ namespace SimpleSocketClient
                         }
                     }
 
-                    _ = this.Invoke(() => this.OnSocketMessage(new SocketMessageEventArgs(
+                    _ = this.InvokeAsync(() => this.OnSocketMessage(new SocketMessageEventArgs(
                         $"Receive Channel closed.",
                         isMetaText: true)));
 
@@ -536,7 +536,7 @@ namespace SimpleSocketClient
                 {
                     try
                     {
-                        _ = this.Invoke(() => this.OnSocketMessage(new SocketMessageEventArgs(
+                        _ = this.InvokeAsync(() => this.OnSocketMessage(new SocketMessageEventArgs(
                             $"Error when receiving data: " + ex.Message,
                             isMetaText: true)));
                     }
@@ -554,7 +554,7 @@ namespace SimpleSocketClient
             {
                 try
                 {
-                    _ = this.Invoke(() => this.OnSocketMessage(new SocketMessageEventArgs(
+                    _ = this.InvokeAsync(() => this.OnSocketMessage(new SocketMessageEventArgs(
                         $"Error when establishing connection: " + ex.Message,
                         isMetaText: true)));
                 }
@@ -571,11 +571,11 @@ namespace SimpleSocketClient
                 // because even though Stop() cancels the CancellationToken that we pass
                 // to Dispatcher.InvokeAsync(), the action is already being run and so the
                 // operation can no longer be canceled.
-                _ = this.Invoke(() => this.OnConnectionFinished(EventArgs.Empty));
+                _ = this.InvokeAsync(() => this.OnConnectionFinished(EventArgs.Empty));
             }
         }
 
-        private Task Invoke(Action action)
+        private Task InvokeAsync(Action action)
         {
             // Specify the CancellationToken on InvokeAsync, so that the call returns once
             // the token is cancelled. That way, we can do a blocking wait on the receive
