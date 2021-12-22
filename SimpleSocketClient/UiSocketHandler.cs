@@ -170,7 +170,11 @@ namespace SimpleSocketClient
                 // algorithm and delayed ACKs (and maybe enable TCP keep-alive in the
                 // future).
                 SocketConfigurator.ConfigureSocket(client.Client);
-                Stream clientStream = client.GetStream();
+
+                // Create the NetworkStream without owning the socket, so that disposing
+                // the stream (e.g. when disposing the SslStream) doesn't close the socket
+                // (as we want to close it manually using a RST).
+                Stream clientStream = new NetworkStream(client.Client, ownsSocket: false);
 
                 // For better performance, we don't wait for the initial invokes to complete
                 // before continuing.
