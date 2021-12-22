@@ -180,7 +180,7 @@ namespace SimpleSocketClient
 
                 if (this.useSsl)
                 {
-                    var sslStream = new SslStream(clientStream, true);
+                    var sslStream = new SslStream(clientStream);
                     try
                     {
                         await sslStream.AuthenticateAsClientAsync(
