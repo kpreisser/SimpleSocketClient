@@ -249,6 +249,15 @@ namespace SimpleSocketClient
                                         $"Send Channel closing.",
                                         isMetaText: true)));
 
+                                    if (clientStream is SslStream sslStream)
+                                    {
+                                        // Propery shutdown the send channel of the SSL/TLS
+                                        // connection, as otherwise the remote would have to
+                                        // treat it as error (to protect from spoofed FIN
+                                        // packets).
+                                        await sslStream.ShutdownAsync();
+                                    }
+
                                     client.Client.Shutdown(SocketShutdown.Send);
                                     break;
                                 }
