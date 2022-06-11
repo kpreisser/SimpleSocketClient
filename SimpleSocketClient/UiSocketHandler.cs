@@ -259,10 +259,11 @@ namespace SimpleSocketClient
 
                                     if (clientStream is SslStream sslStream)
                                     {
-                                        // Propery shutdown the send channel of the SSL/TLS
+                                        // Properly shutdown the send channel of the SSL/TLS
                                         // connection, as otherwise the remote would have to
                                         // treat it as error (to protect from spoofed FIN
                                         // packets).
+                                        // TODO: Why can't we pass a CancellationToken here?
                                         await sslStream.ShutdownAsync();
                                     }
 
@@ -297,7 +298,8 @@ namespace SimpleSocketClient
                                     await clientStream.WriteAsync(
                                         memory,
                                         this.ctSource.Token);
-                                    await clientStream.FlushAsync();
+
+                                    await clientStream.FlushAsync(this.ctSource.Token);
 
                                     ArrayPool<byte>.Shared.Return(buffer);
                                 }
