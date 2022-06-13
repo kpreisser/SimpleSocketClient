@@ -165,7 +165,7 @@ namespace SimpleSocketClient
             {
                 using var client = new TcpClient(this.addressFamily);
                 await client.ConnectAsync(this.host!, this.port, this.ctSource.Token);
-
+                
                 // After the socket is connected, configure it to disable the Nagle
                 // algorithm and delayed ACKs (and maybe enable TCP keep-alive in the
                 // future).
@@ -178,8 +178,9 @@ namespace SimpleSocketClient
 
                 // For better performance, we don't wait for the initial invokes to complete
                 // before continuing.
+                var remoteEndpoint = client.Client.RemoteEndPoint;
                 _ = this.InvokeAsync(() => this.OnSocketMessage(new SocketMessageEventArgs(
-                    $"TCP connection established to '{client.Client.RemoteEndPoint}'." + (this.useSsl ? " Negotiating TLS…" : ""),
+                    $"TCP connection established to '{remoteEndpoint}'." + (this.useSsl ? " Negotiating TLS…" : ""),
                     isMetaText: true)));
 
                 if (this.useSsl)
