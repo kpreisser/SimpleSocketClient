@@ -37,7 +37,7 @@ namespace SimpleSocketClient
             if (enableKeepAlive &&
                 (!OperatingSystem.IsWindows() ||
                     OperatingSystem.IsWindowsVersionAtLeast(Win10Version1703.Major, Win10Version1703.Minor, Win10Version1703.Build)))
-                {
+            {
                 // Set the specified keep alive values.
                 try
                 {
