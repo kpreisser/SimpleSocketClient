@@ -7,7 +7,7 @@ namespace SimpleSocketClient
     {
         private static readonly byte[] IntOneAsBytes = BitConverter.GetBytes(1);
 
-        private static readonly Version Win10Version1703 = new Version(10, 0, 15063);
+        private static readonly Version Win10Version1703 = new(10, 0, 15063);
 
         /// <summary>
         /// Disables the Nagle algorithm and delayed ACKs for TCP sockets
@@ -75,7 +75,7 @@ namespace SimpleSocketClient
             // into a future .NET version.
             // Note: On Debian-based Linux OSes, it seems TCP_QUICKACK is already enabled
             // by default (according to the man page of socket_quickack(3).
-            if (socket.ProtocolType == ProtocolType.Tcp && OperatingSystem.IsWindows())
+            if (socket.ProtocolType is ProtocolType.Tcp && OperatingSystem.IsWindows())
             {
                 try
                 {
