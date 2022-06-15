@@ -167,9 +167,8 @@ namespace SimpleSocketClient
                 await client.ConnectAsync(this.host!, this.port, this.ctSource.Token);
                 
                 // After the socket is connected, configure it to disable the Nagle
-                // algorithm and delayed ACKs (and maybe enable TCP keep-alive in the
-                // future).
-                SocketConfigurator.ConfigureSocket(client.Client);
+                // algorithm, disable delayed ACKs, and enable TCP keep-alive.
+                SocketConfigurator.ConfigureSocket(client.Client, enableKeepAlive: true);
 
                 // Create the NetworkStream without owning the socket, so that disposing
                 // the stream (e.g. when disposing the SslStream) doesn't close the socket
