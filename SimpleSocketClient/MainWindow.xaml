@@ -39,6 +39,7 @@
     <ComboBox x:Name="cbxLineEnding" HorizontalAlignment="Right" Margin="0,0,268,16" VerticalAlignment="Bottom" Width="140" SelectedIndex="0">
       <ComboBoxItem Tag="&#xd;&#xa;">CR+LF (0x0D, 0x0A)</ComboBoxItem>
       <ComboBoxItem Tag="&#xa;">LF (0x0A)</ComboBoxItem>
+      <ComboBoxItem Tag="&#xd;">CR (0x0D)</ComboBoxItem>
       <ComboBoxItem Tag="">None</ComboBoxItem>
     </ComboBox>
     <Label Content="Line Ending:" HorizontalAlignment="Right" Margin="0,0,413,14" VerticalAlignment="Bottom"/>
