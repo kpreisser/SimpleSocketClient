@@ -87,8 +87,10 @@ namespace SimpleSocketClient
         {
             return protocol switch
             {
+#pragma warning disable SYSLIB0039 // Type or member is obsolete
                 SslProtocols.Tls => "TLS 1.0",
                 SslProtocols.Tls11 => "TLS 1.1",
+#pragma warning restore SYSLIB0039 // Type or member is obsolete
                 SslProtocols.Tls12 => "TLS 1.2",
                 SslProtocols.Tls13 => "TLS 1.3",
                 var other => other.ToString()

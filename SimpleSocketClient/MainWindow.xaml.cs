@@ -117,10 +117,14 @@ namespace SimpleSocketClient
                     bool ignoreSslCertErrors = this.chkIgnoreCertErrors.IsChecked == true;
 
                     var sslProtocols = default(SslProtocols);
+
+#pragma warning disable SYSLIB0039 // Type or member is obsolete
                     if (this.chkTls10.IsChecked == true)
                         sslProtocols |= SslProtocols.Tls;
                     if (this.chkTls11.IsChecked == true)
                         sslProtocols |= SslProtocols.Tls11;
+#pragma warning restore SYSLIB0039 // Type or member is obsolete
+
                     if (this.chkTls12.IsChecked == true)
                         sslProtocols |= SslProtocols.Tls12;
                     if (this.chkTls13.IsChecked == true)
